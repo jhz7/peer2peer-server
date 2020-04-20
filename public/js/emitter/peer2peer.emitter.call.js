@@ -36,7 +36,7 @@ function createAndSendOffer(emitterPeerConnection) {
 } 
 
 function onAnswer(emitterPeerConnection, message) {  
-  console.log('Respuesta recibida ', message);
+  console.log('Respuesta recibida ');
 
   if(!message.answer) 
     throw new Error('La respuesta recibida no es válida');
@@ -54,8 +54,6 @@ function onIceCandidate(event) {
 }
 
 function onNewReceiverIceCandidate(emitterPeerConnection, data) {
-  console.log('ICE candidate en receptor ', data);
-
   if(data.iceCandidate)
     emitterPeerConnection.addIceCandidate(data.iceCandidate)
         .then(function() { console.log('Ice candidate agregado en emisor'); });

@@ -50,15 +50,13 @@ function gotRemoteStream(event) {
 }
 
 function onNewEmitterIceCandidate(receiverPeerConnection, data) {
-  console.log('ICE candidate en emisor ', data);
-
   if(data.iceCandidate)
     receiverPeerConnection.addIceCandidate(data.iceCandidate)
       .then(function() { console.log('Ice candidate agregado en receptor'); });
 }
 
 function onOffer(receiverPeerConnection, message) {
-  console.log('Oferta recibida ', message);
+  console.log('Oferta recibida');
 
   startTime = window.performance.now();
 
