@@ -13,11 +13,8 @@ app.use(express.json());
 app.use(require('./routes/index'));
 
 let io = socketIO(server);
-let sala = 'peer2peer';
 
 io.on('connection', (cliente) => {
-
-  cliente.join(sala);
 
   console.log(`Usuario ${cliente.id} conectado`);
 
@@ -26,20 +23,20 @@ io.on('connection', (cliente) => {
   });
 
   cliente.on('offer', (data, callback) => {
-    cliente.broadcast.to(sala).emit('offer', data);
+    cliente.broadcast.emit('offer', data);
 
     callback('Oferta enviada');
   });
   
   
   cliente.on('answer', (data, callback) => {
-    cliente.broadcast.to(sala).emit('answer', data);
+    cliente.broadcast.emit('answer', data);
 
     callback('Respuesta enviada');
   });
 
   cliente.on('newIceCandidate', (data) => {
-    cliente.broadcast.to(sala).emit('newIceCandidate', data);
+    cliente.broadcast.emit('newIceCandidate', data);
   });
   
 });

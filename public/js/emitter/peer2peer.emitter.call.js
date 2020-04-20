@@ -43,12 +43,13 @@ function onAnswer(emitterPeerConnection, message) {
   if(!message.answer) 
     throw new Error('La respuesta recibida no es válida');
 
-  n++;
-
-  if(n === 1){
+  if(n === 0){
+    n++;
    let remoteDescription = new RTCSessionDescription(message.answer);
     emitterPeerConnection.setRemoteDescription(remoteDescription)
       .catch(function(error) { console.error('Error procesando respuesta de señalización ', error) });
+  } else {
+    console.log(`Respuesta recibida ${n} veces`);
   }
 }
 
