@@ -33,7 +33,7 @@ receiverVideo.addEventListener('resize', () => {
 });
 
 function onIceCandidate(event) {
-  console.log('ICE candidate en receptor ', event);
+  console.log('ICE candidate generado en receptor');
 
   let iceCandidate = event.candidate;
   if (iceCandidate) socket.emit('newIceCandidate', { iceCandidate });
@@ -41,7 +41,6 @@ function onIceCandidate(event) {
 
 function onIceConnectionStateChange(receiverPeerConnection, event) {
   console.log('Estado del ICE en receptor ', receiverPeerConnection.iceConnectionState);
-  console.log('Evento estado del ICE en receptor ', event);
 }
 
 function gotRemoteStream(event) {

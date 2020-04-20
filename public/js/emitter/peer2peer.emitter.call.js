@@ -47,7 +47,7 @@ function onAnswer(emitterPeerConnection, message) {
 }
 
 function onIceCandidate(event) {
-  console.log('ICE candidate en emisor ', event);
+  console.log('ICE candidate generado en emisor');
 
   let iceCandidate = event.candidate;
   if (iceCandidate) socket.emit('newIceCandidate', { iceCandidate });
@@ -63,7 +63,6 @@ function onNewReceiverIceCandidate(emitterPeerConnection, data) {
 
 function onIceConnectionStateChange(emitterPeerConnection, event) {
   console.log('Estado del ICE en emisor ', emitterPeerConnection.iceConnectionState);
-  console.log('Evento estado del ICE en emisor ', event);
 }
 
 function gotRemoteStream(event) {
