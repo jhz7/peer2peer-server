@@ -33,7 +33,7 @@ function createAndSendOffer(emitterPeerConnection) {
   })
   .catch(console.error);
 
-}
+} 
 
 function onAnswer(emitterPeerConnection, message) {  
   console.log('Respuesta recibida ', message);
