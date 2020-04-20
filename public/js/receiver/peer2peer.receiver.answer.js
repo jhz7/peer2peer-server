@@ -95,4 +95,6 @@ function answer() {
   socket.on('newIceCandidate', function(data) { onNewEmitterIceCandidate(receiverPeerConnection, data) });
 }
 
-answer();
+window.onload = function() {
+  answer();
+}

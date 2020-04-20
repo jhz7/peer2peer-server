@@ -96,4 +96,6 @@ function call() {
   console.log('Listener sobre el socket agregados');
 }
 
-call();
+window.onload = function() {
+  call();
+}
