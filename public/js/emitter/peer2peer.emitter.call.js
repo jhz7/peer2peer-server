@@ -23,7 +23,7 @@ function startEmitter(emitterPeerConnection) {
         .forEach(track => emitterPeerConnection.addTrack(track, localStream));
 
       createAndSendOffer(emitterPeerConnection);
-    })
+    });
 }
 
 function createAndSendOffer(emitterPeerConnection) {

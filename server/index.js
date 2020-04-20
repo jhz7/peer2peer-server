@@ -36,11 +36,12 @@ io.on('connection', (cliente) => {
     cliente.broadcast.to(sala).emit('answer', data);
 
     callback('Answer enviada');
-  })
+  });
 
   cliente.on('newIceCandidate', (data) => {
     cliente.broadcast.to(sala).emit('newIceCandidate', data);
-  })
+  });
+  
 });
 
 const serverPort = process.env.PORT || 3000;
