@@ -26,9 +26,6 @@ io.on('connection', (cliente) => {
   });
 
   cliente.on('offer', (data, callback) => {
-
-    console.log('Offer ', data);
-
     cliente.broadcast.to(sala).emit('offer', data);
 
     callback('Offer enviada');
@@ -36,18 +33,12 @@ io.on('connection', (cliente) => {
   
   
   cliente.on('answer', (data, callback) => {
-
-    console.log('Answer ', data);
-
     cliente.broadcast.to(sala).emit('answer', data);
 
     callback('Answer enviada');
   })
 
   cliente.on('newIceCandidate', (data) => {
-
-    console.log('NewIceCandidate ', data);
-
     cliente.broadcast.to(sala).emit('newIceCandidate', data);
   })
 });
