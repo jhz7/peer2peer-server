@@ -35,15 +35,21 @@ function createAndSendOffer(emitterPeerConnection) {
 
 } 
 
+var n = 0;
+
 function onAnswer(emitterPeerConnection, message) {  
   console.log('Respuesta recibida ');
 
   if(!message.answer) 
     throw new Error('La respuesta recibida no es válida');
 
-  let remoteDescription = new RTCSessionDescription(message.answer);
-  emitterPeerConnection.setRemoteDescription(remoteDescription)
-    .catch(function(error) { console.error('Error procesando respuesta de señalización ', error) });
+  n++;
+
+  if(n === 1){
+   let remoteDescription = new RTCSessionDescription(message.answer);
+    emitterPeerConnection.setRemoteDescription(remoteDescription)
+      .catch(function(error) { console.error('Error procesando respuesta de señalización ', error) });
+  }
 }
 
 function onIceCandidate(event) {
