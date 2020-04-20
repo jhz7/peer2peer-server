@@ -1,10 +1,4 @@
-/*var iceServers = 'stun:stun.l.google.com:19302';
-   ['stun:stun.l.google.com:19302',
-  'stun:stun1.l.google.com:19302',
-  'stun:stun2.l.google.com:19302',
-  'stun:stun3.l.google.com:19302',
-  'stun:stun4.l.google.com:19302']; */
-
+var socket = io();
 
 var receiverVideo = document.querySelector('video#receiverVideo');
 var remoteStream = new MediaStream();

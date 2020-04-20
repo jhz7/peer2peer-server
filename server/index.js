@@ -28,14 +28,14 @@ io.on('connection', (cliente) => {
   cliente.on('offer', (data, callback) => {
     cliente.broadcast.to(sala).emit('offer', data);
 
-    callback('Offer enviada');
+    callback('Oferta enviada');
   });
   
   
   cliente.on('answer', (data, callback) => {
     cliente.broadcast.to(sala).emit('answer', data);
 
-    callback('Answer enviada');
+    callback('Respuesta enviada');
   });
 
   cliente.on('newIceCandidate', (data) => {

@@ -1,10 +1,4 @@
- /*var emitterIceServers = 'stun:stun.l.google.com:19302';
-  ['stun:stun.l.google.com:19302',
-  'stun:stun1.l.google.com:19302',
-  'stun:stun2.l.google.com:19302',
-  'stun:stun3.l.google.com:19302',
-  'stun:stun4.l.google.com:19302']; 
- */
+var socket = io();
 
 var emitterVideo = document.querySelector('video#emitterVideo');
 var remoteStream = new MediaStream();
@@ -19,6 +13,8 @@ function startEmitter(emitterPeerConnection) {
 
   navigator.mediaDevices.getUserMedia(constraints)
     .then(function(localStream) {      
+
+      console.log('Dispositivos media obtenidos');
       localStream.getTracks()
         .forEach(track => emitterPeerConnection.addTrack(track, localStream));
 
@@ -27,6 +23,8 @@ function startEmitter(emitterPeerConnection) {
 }
 
 function createAndSendOffer(emitterPeerConnection) {
+
+  console.log('Inicio envio oferta');
 
   emitterPeerConnection.createOffer().then( function(offer) {
     emitterPeerConnection.setLocalDescription(offer)
@@ -75,17 +73,27 @@ function gotRemoteStream(event) {
 
 function call() {
 
+  console.log('Iniciando llamada');
+
   let emitterConfiguration = {};//{ sdpSemantics: 'default' }; //{'iceServers': [{'urls': iceServers}]};
   let emitterPeerConnection = new RTCPeerConnection(emitterConfiguration);
+
+  console.log('Conexión emisor instanciada');
 
   emitterPeerConnection.addEventListener('icecandidate', onIceCandidate);
   emitterPeerConnection.addEventListener('iceconnectionstatechange', function(event) { onIceConnectionStateChange(emitterPeerConnection, event) });
   emitterPeerConnection.addEventListener('track', gotRemoteStream);
 
+  console.log('Listeners sobre conexión agregados');
+
   startEmitter(emitterPeerConnection);
+
+  console.log('Llamada iniciada');
 
   socket.on('answer', function(message) { onAnswer(emitterPeerConnection, message); });
   socket.on('newIceCandidate', function(data) { onNewReceiverIceCandidate(emitterPeerConnection, data) });
+
+  console.log('Listener sobre el socket agregados');
 }
 
 call();
