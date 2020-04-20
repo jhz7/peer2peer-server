@@ -15,11 +15,10 @@ function prepare(receiverPeerConnection) {
 
   navigator.mediaDevices.getUserMedia(constraints)
     .then(function(localStream) {
-      // emitterVideo.srcObject = localStream;
-      
       localStream.getTracks()
         .forEach(track => receiverPeerConnection.addTrack(track, localStream));
     })
+    .catch(console.error);
 }
 
 receiverVideo.addEventListener('resize', () => {
@@ -95,6 +94,4 @@ function answer() {
   socket.on('newIceCandidate', function(data) { onNewEmitterIceCandidate(receiverPeerConnection, data) });
 }
 
-window.onload = function() {
-  answer();
-}
+answer();

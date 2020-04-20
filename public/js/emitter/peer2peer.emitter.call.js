@@ -19,7 +19,8 @@ function startEmitter(emitterPeerConnection) {
         .forEach(track => emitterPeerConnection.addTrack(track, localStream));
 
       createAndSendOffer(emitterPeerConnection);
-    });
+    })
+    .catch(console.error);
 }
 
 function createAndSendOffer(emitterPeerConnection) {
@@ -96,6 +97,4 @@ function call() {
   console.log('Listener sobre el socket agregados');
 }
 
-window.onload = function() {
-  call();
-}
+call();
