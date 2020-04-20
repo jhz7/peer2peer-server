@@ -13,8 +13,11 @@ app.use(express.json());
 app.use(require('./routes/index'));
 
 let io = socketIO(server);
+let sala = 'peer2peer';
 
 io.on('connection', (cliente) => {
+
+  cliente.join(sala);
 
   console.log(`Usuario ${cliente.id} conectado`);
 
@@ -24,7 +27,9 @@ io.on('connection', (cliente) => {
 
   cliente.on('offer', (data, callback) => {
 
-    cliente.broadcast.emit('offer', data);
+    console.log('Offer ', data);
+
+    cliente.broadcast.to(sala).emit('offer', data);
 
     callback('Offer enviada');
   });
@@ -32,15 +37,20 @@ io.on('connection', (cliente) => {
   
   cliente.on('answer', (data, callback) => {
 
-    cliente.broadcast.emit('answer', data);
+    console.log('Answer ', data);
+
+    cliente.broadcast.to(sala).emit('answer', data);
 
     callback('Answer enviada');
   })
 
   cliente.on('newIceCandidate', (data) => {
-    cliente.broadcast.emit('newIceCandidate', data);
+
+    console.log('NewIceCandidate ', data);
+
+    cliente.broadcast.to(sala).emit('newIceCandidate', data);
   })
 });
 
-const serverPort = 3000;
+const serverPort = process.env.PORT || 3000;
 server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));

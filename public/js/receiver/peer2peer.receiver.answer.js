@@ -7,8 +7,26 @@
 
 
 var receiverVideo = document.querySelector('video#receiverVideo');
+var remoteStream = new MediaStream();
+receiverVideo.srcObject = remoteStream;
 
 let startTime;
+
+function prepare(receiverPeerConnection) {
+
+  var constraints = {
+    video: true,
+    audio: true
+  };
+
+  navigator.mediaDevices.getUserMedia(constraints)
+    .then(function(localStream) {
+      // emitterVideo.srcObject = localStream;
+      
+      localStream.getTracks()
+        .forEach(track => receiverPeerConnection.addTrack(track, localStream));
+    })
+}
 
 receiverVideo.addEventListener('resize', () => {
   console.log(`Remote video size changed to ${receiverVideo.videoWidth}x${receiverVideo.videoHeight}`);
@@ -34,17 +52,9 @@ function onIceConnectionStateChange(receiverPeerConnection, event) {
 }
 
 function gotRemoteStream(event) {
-  console.log('Evento track ', event);
+  console.log('Recibiendo data');
 
-  if(event.track.kind === 'video'){
-    receiverVideo.srcObject = event.streams[0];
-    console.log('Receptor recibió stream de video del emisor');
-  }
-
- /*  if (receiverVideo.srcObject !== event.streams[0]) {
-    receiverVideo.srcObject = event.streams[0];
-    console.log('Receptor recibió stream del emisor');
-  } */
+  remoteStream.addTrack(event.track, remoteStream);
 }
 
 function onNewEmitterIceCandidate(receiverPeerConnection, data) {
@@ -80,6 +90,8 @@ function answer() {
 
   let receiverConfiguration = {}; //{ sdpSemantics: 'default' }; //{'iceServers': [{'urls': iceServers}]};
   let receiverPeerConnection = new RTCPeerConnection(receiverConfiguration);
+
+  prepare(receiverPeerConnection);
 
   receiverPeerConnection.addEventListener('icecandidate', onIceCandidate);
   receiverPeerConnection.addEventListener('iceconnectionstatechange', function(event) { onIceConnectionStateChange(receiverPeerConnection, event) });

@@ -6,18 +6,19 @@
   'stun:stun4.l.google.com:19302']; 
  */
 
-var constraints = {
-  video: true,
-  audio: true
-};
-
 var emitterVideo = document.querySelector('video#emitterVideo');
+var remoteStream = new MediaStream();
+emitterVideo.srcObject = remoteStream;
 
-function start(emitterPeerConnection) {
+function startEmitter(emitterPeerConnection) {
+
+  var constraints = {
+    video: true,
+    audio: true
+  };
 
   navigator.mediaDevices.getUserMedia(constraints)
-    .then(function(localStream) {
-      emitterVideo.srcObject = localStream;
+    .then(function(localStream) {      
       localStream.getTracks()
         .forEach(track => emitterPeerConnection.addTrack(track, localStream));
 
@@ -66,6 +67,12 @@ function onIceConnectionStateChange(emitterPeerConnection, event) {
   console.log('Evento estado del ICE en emisor ', event);
 }
 
+function gotRemoteStream(event) {
+  console.log('Recibiendo data');
+
+  remoteStream.addTrack(event.track, remoteStream);
+}
+
 function call() {
 
   let emitterConfiguration = {};//{ sdpSemantics: 'default' }; //{'iceServers': [{'urls': iceServers}]};
@@ -73,8 +80,9 @@ function call() {
 
   emitterPeerConnection.addEventListener('icecandidate', onIceCandidate);
   emitterPeerConnection.addEventListener('iceconnectionstatechange', function(event) { onIceConnectionStateChange(emitterPeerConnection, event) });
+  emitterPeerConnection.addEventListener('track', gotRemoteStream);
 
-  start(emitterPeerConnection);
+  startEmitter(emitterPeerConnection);
 
   socket.on('answer', function(message) { onAnswer(emitterPeerConnection, message); });
   socket.on('newIceCandidate', function(data) { onNewReceiverIceCandidate(emitterPeerConnection, data) });
