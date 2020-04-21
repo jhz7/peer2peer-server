@@ -1,5 +1,8 @@
 var socket = io();
 
+/* var s = new SignalingChannel();
+console.log('Signaling class ', s); */
+
 var emitterVideo = document.querySelector('video#emitterVideo');
 var remoteStream = new MediaStream();
 emitterVideo.srcObject = remoteStream;
