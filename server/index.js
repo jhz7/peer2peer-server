@@ -22,21 +22,25 @@ io.on('connection', (cliente) => {
     console.log(`Usuario ${cliente.id} desconectado`);
   });
 
-  cliente.on('offer', (data, callback) => {
+  cliente.on('offer', (data) => {
     cliente.broadcast.emit('offer', data);
-
-    callback('Oferta enviada');
   });
   
   
-  cliente.on('answer', (data, callback) => {
+  cliente.on('answer', (data) => {
     cliente.broadcast.emit('answer', data);
-
-    callback('Respuesta enviada');
   });
 
   cliente.on('newIceCandidate', (data) => {
     cliente.broadcast.emit('newIceCandidate', data);
+  });
+  
+  cliente.on('onStart', (data) => {
+    cliente.broadcast.emit('onStart', data);
+  });
+  
+  cliente.on('onAnswer', (data) => {
+    cliente.broadcast.emit('onAnswer', data);
   });
   
 });
