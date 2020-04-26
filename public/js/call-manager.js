@@ -36,12 +36,12 @@ class CallManager {
     });
   }
 
- /*  addAudioTrackOnPeer(localStream) {
-    this.peer.addTrack(localStream.getAudioTracks()[0], this.stream);
-  } */
+  addAudioTrackOnPeer(localStream) {
+    this.peer.addTrack(localStream.getAudioTracks()[0], localStream);
+  }
   
   addVideoTrackOnPeer(localStream) {
-    localStream.getTracks().forEach(track => this.peer.addTrack(track, localStream));
+    this.peer.addTrack(localStream.getVideoTracks()[0], localStream);
   }
 
   async negotiate(isStarter) {

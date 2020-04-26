@@ -35,8 +35,9 @@ const videoStreamConstraints = { audio: false, video: true };
 
 (async() => {
 
+  let videoStream = new MediaStream();
   let fullStream = await navigator.mediaDevices.getUserMedia(fullStreamConstraints);
-  let videoStream = new MediaStream() ;//= await navigator.mediaDevices.getUserMedia(videoStreamConstraints);
+
   videoStream.addTrack(fullStream.getVideoTracks()[0], videoStream);
 
   primaryVideo.srcObject = videoStream;
@@ -50,7 +51,7 @@ const videoStreamConstraints = { audio: false, video: true };
       event: 'onAnswer',
       listener: (data) => {
 
-        //callManager.addAudioTrackOnPeer(fullStream);
+        callManager.addAudioTrackOnPeer(fullStream);
         callManager.addVideoTrackOnPeer(fullStream);
         primaryVideo.srcObject = callManager.getRemoteStream();
         callManager.negotiate(true);
