@@ -36,7 +36,8 @@ const videoStreamConstraints = { audio: false, video: true };
 (async() => {
 
   let fullStream = await navigator.mediaDevices.getUserMedia(fullStreamConstraints);
-  let videoStream = await navigator.mediaDevices.getUserMedia(videoStreamConstraints);
+  let videoStream = new MediaStream() ;//= await navigator.mediaDevices.getUserMedia(videoStreamConstraints);
+  videoStream.addTrack(fullStream.getVideoTracks()[0], videoStream);
 
   primaryVideo.srcObject = videoStream;
   secondaryVideo.srcObject = videoStream;
