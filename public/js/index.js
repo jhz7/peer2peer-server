@@ -54,6 +54,7 @@ const videoStreamConstraints = { audio: false, video: true };
         callManager.addAudioTrackOnPeer(fullStream);
         callManager.addVideoTrackOnPeer(fullStream);
         primaryVideo.srcObject = callManager.getRemoteStream();
+
         callManager.negotiate(true);
       }
     })
@@ -62,9 +63,11 @@ const videoStreamConstraints = { audio: false, video: true };
   
   answerButton.addEventListener('click', (e) => {
     enableStop();
-    //callManager.addAudioTrackOnPeer(fullStream);
+
+    callManager.addAudioTrackOnPeer(fullStream);
     callManager.addVideoTrackOnPeer(fullStream);
     primaryVideo.srcObject = callManager.getRemoteStream();
+    
     signalingChannel.send({ event: 'onAnswer', data: {} });
   });
   
