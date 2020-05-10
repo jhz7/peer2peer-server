@@ -1,4 +1,4 @@
-class PeerManager {
+class CallManager {
 
   audioTrack;
   videoTrack;
