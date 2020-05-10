@@ -5,24 +5,24 @@ const callManager = new CallManager(signalingChannel);
 const enableStart = () => {
   startButton.disabled = false;
   answerButton.disabled = true;
-  stopButton.disabled = true;
+  cancelButton.disabled = true;
 }
 
 const enableAnswer = () => {
   startButton.disabled = true;
   answerButton.disabled = false;
-  stopButton.disabled = true;
+  cancelButton.disabled = true;
 }
 
-const enableStop = () => {
+const enableCancel = () => {
   startButton.disabled = true;
   answerButton.disabled = true;
-  stopButton.disabled = false;
+  cancelButton.disabled = false;
 }
 
 let startButton = document.querySelector('button#start-button');
 let answerButton = document.querySelector('button#answer-button');
-let stopButton = document.querySelector('button#stop-button');
+let cancelButton = document.querySelector('button#cancel-button');
 
 let primaryVideo = document.querySelector('video#primary-video');
 let secondaryVideo = document.querySelector('video#secondary-video');
@@ -44,7 +44,7 @@ const videoStreamConstraints = { audio: false, video: true };
   secondaryVideo.srcObject = videoStream;
 
   startButton.addEventListener('click', (e) => {
-    enableStop();
+    enableCancel();
     signalingChannel.send({ event: 'onStart', data: {} });
   
     signalingChannel.addHandler({
@@ -62,12 +62,12 @@ const videoStreamConstraints = { audio: false, video: true };
   });
   
   answerButton.addEventListener('click', (e) => {
-    enableStop();
+    enableCancel();
 
     callManager.addAudioTrackOnPeer(fullStream);
     callManager.addVideoTrackOnPeer(fullStream);
     primaryVideo.srcObject = callManager.getRemoteStream();
-    
+
     signalingChannel.send({ event: 'onAnswer', data: {} });
   });
   
@@ -78,6 +78,10 @@ const videoStreamConstraints = { audio: false, video: true };
       callManager.negotiate(false);
     }
   });
+
+  cancelButton.addEventListener('click', (e) => {
+    callManager.finalize();
+  })
 
 
 })();

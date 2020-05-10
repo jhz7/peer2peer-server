@@ -1,4 +1,7 @@
-class CallManager {
+class PeerManager {
+
+  audioTrack;
+  videoTrack;
 
   constructor(signalingChannel) {
 
@@ -37,11 +40,17 @@ class CallManager {
   }
 
   addAudioTrackOnPeer(localStream) {
-    this.peer.addTrack(localStream.getAudioTracks()[0], localStream);
+    this.audioTrack = this.peer.addTrack(localStream.getAudioTracks()[0], localStream);
   }
   
   addVideoTrackOnPeer(localStream) {
-    this.peer.addTrack(localStream.getVideoTracks()[0], localStream);
+    this.videoTrack = this.peer.addTrack(localStream.getVideoTracks()[0], localStream);
+  }
+
+  finalize(){
+    this.peer.removeTrack(this.audioTrack);
+    this.peer.removeTrack(this.videoTrack);
+    this.peer.close();
   }
 
   async negotiate(isStarter) {
